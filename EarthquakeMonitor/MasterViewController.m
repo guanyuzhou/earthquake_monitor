@@ -62,12 +62,14 @@
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+// download and refresh the list from pull-to-refresh
 - (void)refresh:(UIRefreshControl *)refreshControl
 {
     [self sendRequestForEarthquakeData];
     [refreshControl endRefreshing];
 }
 
+// display summary on a map
 - (void)summaryOnMapPressed {
     UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryMap"];
     [self.navigationController pushViewController:controller animated:YES];
@@ -76,6 +78,7 @@
     
 }
 
+// download and refresh the list from prefresh button
 - (void)refreshPressed {
     [self sendRequestForEarthquakeData];
 }

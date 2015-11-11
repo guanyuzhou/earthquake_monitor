@@ -2,6 +2,9 @@
 //  MaptypeViewController.m
 //  EarthquakeMonitor
 //
+//  Used for switching base map types. Street, Satellite and Topo are supported
+//
+//
 //  Created by Guanyu Zhou on 11/11/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //
@@ -34,6 +37,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+// Dismiss the controller
 - (void)cancel {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -67,6 +71,7 @@
     
     cell.textLabel.text = [self.maptypes objectAtIndex:indexPath.row];
 
+    // if the current row matches the current map type, display the indicator
     if ([indexPath compare:self.lastIndexPath] == NSOrderedSame || [cell.textLabel.text compare:[ARCGISHelper getMaptype]] == NSOrderedSame)
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -82,12 +87,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // mark the selected row with indicator and reload the data
     self.lastIndexPath = indexPath;
     [ARCGISHelper setMaptype:[self.maptypes objectAtIndex:indexPath.row]];
     [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     [tableView reloadData];
     [self.maptypeChangedTarget mapTypeChanged];
     
+    // dismiss the controller after delay
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

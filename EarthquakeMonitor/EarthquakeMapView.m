@@ -2,6 +2,10 @@
 //  EarthquakeMapView.m
 //  EarthquakeMonitor
 //
+//  View of the map that displays epi-center
+//  Support colored and labeled pins based on the magnitude
+//  Support multuple pins
+//
 //  Created by Guanyu Zhou on 11/11/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //
@@ -78,6 +82,7 @@
     
     if([self.detailItem isKindOfClass:[NSDictionary class]])
     {
+        //if a single pin is being displayed
         NSDictionary *properties = [self.detailItem valueForKey:@"properties"];
         NSDictionary *geometry = [self.detailItem valueForKey:@"geometry"];
         NSNumber *mag = [properties valueForKey:@"mag"];
@@ -88,6 +93,7 @@
     }
     else if([self.detailItem isKindOfClass:[NSArray class]] && ((NSArray *)self.detailItem).count>1)
     {
+        //if multiple pins are being displayed
         AGSMutableMultipoint *rawGeometry = [[AGSMutableMultipoint alloc] initWithSpatialReference:[AGSSpatialReference wgs84SpatialReference]];
         for (NSDictionary *item in self.detailItem) {
             NSDictionary *properties = [item valueForKey:@"properties"];
@@ -105,6 +111,7 @@
     }
     else if([self.detailItem isKindOfClass:[NSArray class]] && ((NSArray *)self.detailItem).count==1)
     {
+        //if a single pin is being displayed in the summary map view
         NSDictionary *properties = [[self.detailItem firstObject] valueForKey:@"properties"];
         NSDictionary *geometry = [[self.detailItem firstObject] valueForKey:@"geometry"];
         NSNumber *mag = [properties valueForKey:@"mag"];
@@ -121,8 +128,8 @@
  */
 
 - (void)mapViewDidLoad:(AGSMapView *) mapView {
-    //do something now that the map is loaded
-    //for example, show the current location on the map
+    //now the map is loaded
+    //zoom the map to appropriate envelope
     [mapView.locationDisplay startDataSource];
     
     double delayInSeconds = 0.4;
@@ -132,10 +139,12 @@
         NSLog(@"%@",self.pin);
         if(self.pin && [self.pin isKindOfClass:[AGSPoint class]])
         {
+            //if a single pin is displayed
             [self.mapView zoomToResolution:5000 withCenterPoint:(AGSPoint *)self.pin animated:YES];
         }
         else if(self.pin)
         {
+            //if more pins are displayed
             [self.mapView zoomToResolution:5000 animated:NO];
             [self.mapView zoomToGeometry:self.pin withPadding:20000 animated:YES];
         }

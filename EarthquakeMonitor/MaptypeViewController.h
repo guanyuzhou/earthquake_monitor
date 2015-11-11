@@ -2,6 +2,9 @@
 //  MaptypeViewController.h
 //  EarthquakeMonitor
 //
+//  Used for switching base map types. Street, Satellite and Topo are supported
+//
+//
 //  Created by Guanyu Zhou on 11/11/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //

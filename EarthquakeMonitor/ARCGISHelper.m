@@ -28,6 +28,7 @@
         return @"http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
 }
 
+// a global variable for map types
 static NSString *maptype = nil;
 
 +(NSString *)getMaptype
