@@ -2,7 +2,7 @@
 //  EarthquakeMonitorTests.m
 //  EarthquakeMonitorTests
 //
-//  Created by Guanyu Zhou on 11/11/15.
+//  Created by Guanyu Zhou on 11/10/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //
 
