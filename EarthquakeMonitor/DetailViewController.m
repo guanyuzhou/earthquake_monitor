@@ -48,7 +48,12 @@
         
         //self.navigationItem.title = place;
         
-        self.label_mag.text = [NSString stringWithFormat:@"%@",mag.stringValue];
+        if(mag.stringValue.length>4)
+            self.label_mag.text = [NSString stringWithFormat:@"%@", [mag.stringValue substringToIndex:4]];
+        else
+            self.label_mag.text = [NSString stringWithFormat:@"%@", mag.stringValue];
+        
+        //self.label_mag.text = [NSString stringWithFormat:@"%@",mag.stringValue];
         self.label_mag.textColor = [USGSDataFeeder getColorForMagnitude:mag.doubleValue];
         
         self.label_place.text = place;

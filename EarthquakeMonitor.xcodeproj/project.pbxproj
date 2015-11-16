@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5905F64E1BF6926A00193820 /* geojson_hour.json in Resources */ = {isa = PBXBuildFile; fileRef = 5905F64D1BF6926A00193820 /* geojson_hour.json */; };
+		5905F6501BF6969D00193820 /* geojson_year.json in Resources */ = {isa = PBXBuildFile; fileRef = 5905F64F1BF6969D00193820 /* geojson_year.json */; };
 		596963561BF2B612006B85DA /* USGSDataFeeder.m in Sources */ = {isa = PBXBuildFile; fileRef = 596963551BF2B612006B85DA /* USGSDataFeeder.m */; };
 		596963591BF30E4A006B85DA /* ARCGISHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 596963581BF30E4A006B85DA /* ARCGISHelper.m */; };
 		5969635E1BF38CB6006B85DA /* SummaryMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5969635D1BF38CB6006B85DA /* SummaryMapViewController.m */; };
@@ -33,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5905F64D1BF6926A00193820 /* geojson_hour.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_hour.json; sourceTree = "<group>"; };
+		5905F64F1BF6969D00193820 /* geojson_year.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geojson_year.json; sourceTree = "<group>"; };
 		596963541BF2B612006B85DA /* USGSDataFeeder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USGSDataFeeder.h; sourceTree = "<group>"; };
 		596963551BF2B612006B85DA /* USGSDataFeeder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USGSDataFeeder.m; sourceTree = "<group>"; };
 		596963571BF30E4A006B85DA /* ARCGISHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCGISHelper.h; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				59E503F91BF2AFF300F63914 /* Info.plist */,
+				5905F64D1BF6926A00193820 /* geojson_hour.json */,
+				5905F64F1BF6969D00193820 /* geojson_year.json */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -198,6 +204,7 @@
 				TargetAttributes = {
 					59E503D71BF2AFF300F63914 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 6Y3GHAT5AX;
 					};
 					59E503F31BF2AFF300F63914 = {
 						CreatedOnToolsVersion = 6.4;
@@ -239,6 +246,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5905F64E1BF6926A00193820 /* geojson_hour.json in Resources */,
+				5905F6501BF6969D00193820 /* geojson_year.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +394,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					SDKs/,
 					"$(PROJECT_DIR)/SDKs",
@@ -406,6 +416,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					SDKs/,
 					"$(PROJECT_DIR)/SDKs",

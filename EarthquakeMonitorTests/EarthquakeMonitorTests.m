@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "USGSDataFeeder.h"
 
 @interface EarthquakeMonitorTests : XCTestCase
 
@@ -25,15 +26,26 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)testJsonParser {
     // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
+    NSBundle *testbundle = [NSBundle bundleForClass:[self class]];
+    NSURL *resourceurl = [testbundle URLForResource:@"geojson_hour" withExtension:@"json"];
+    NSString *resourcedata = [NSString stringWithContentsOfURL:resourceurl encoding:NSUTF8StringEncoding error:nil];
+    NSDictionary *geojsonDict = [USGSDataFeeder loadDataFromUSGS:resourcedata];
+    NSArray *features = [geojsonDict valueForKey:@"features"];
+    XCTAssertEqual(features.count, 5);
 }
 
-- (void)testPerformanceExample {
+- (void)testPerformanceJsonParser {
     // This is an example of a performance test case.
+    NSURL *resourceurl = [NSURL URLWithString:@"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"];
+    NSString *resourcedata = [NSString stringWithContentsOfURL:resourceurl encoding:NSUTF8StringEncoding error:nil];
+    
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
+        
+        NSDictionary *geojsonDict = [USGSDataFeeder loadDataFromUSGS:resourcedata];
+        [geojsonDict valueForKey:@"features"];
     }];
 }
 

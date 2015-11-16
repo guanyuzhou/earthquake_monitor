@@ -126,8 +126,11 @@
     else
         magLabel = (UILabel *)[cell viewWithTag:1];
     magLabel.backgroundColor = [USGSDataFeeder getColorForMagnitude:mag.doubleValue];
-    [magLabel setFont:[UIFont boldSystemFontOfSize:25]];
-    magLabel.text = [NSString stringWithFormat:@"%@", mag.stringValue];
+    [magLabel setFont:[UIFont boldSystemFontOfSize:23]];
+    if(mag.stringValue.length>4)
+        magLabel.text = [NSString stringWithFormat:@"%@", [mag.stringValue substringToIndex:4]];
+    else
+        magLabel.text = [NSString stringWithFormat:@"%@", mag.stringValue];
     
     UILabel *textLabel;
     if(![cell viewWithTag:2])
