@@ -2,6 +2,15 @@
 //  MasterViewController.m
 //  EarthquakeMonitor
 //
+//  This is the master view of the split view. The summary of the eathquakes will be shown as a list in the summary view.
+//  Navigation bar:
+//  This master view supports pull-to-refresh and press-button-to-refresh. The refresh button is placed at the right of the navigation bar
+//  The left button of the navigation bar points to a controller that display summary of earthquakes on a map.
+//  Row/Cells:
+//  Each row is colored and labeled according to the magnitude of the earthquake. Place of the earthquake is shown in the cell
+//  Each row is marked with a detail-disclosure-indicator
+//  Row height is calculated based on the length of string
+//
 //  Created by Guanyu Zhou on 11/10/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //
@@ -48,11 +57,17 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshPressed)];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:false];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+// insertion of data to the list (not used)
 - (void)insertNewObject:(id)data {
     if (!self.objects) {
         self.objects = [[NSMutableArray alloc] init];
@@ -69,7 +84,7 @@
     [refreshControl endRefreshing];
 }
 
-// display summary on a map
+// display summary on a map. go to another controller
 - (void)summaryOnMapPressed {
     UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryMap"];
     [self.navigationController pushViewController:controller animated:YES];
@@ -84,7 +99,7 @@
 }
 
 #pragma mark - Segues
-
+// go to the detail view controller
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
@@ -97,7 +112,7 @@
 }
 
 #pragma mark - Table View
-
+// data delegates of the table view
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -105,7 +120,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.objects.count;
 }
-
+// load/reuse/create cells
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
@@ -152,7 +167,7 @@
     
     return cell;
 }
-
+//  we won't allow users to edit rows
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.
     return NO;
@@ -166,7 +181,7 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
 }
-
+//  automatically adjust row height based on the length of the string
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *featureObject = self.objects[indexPath.row];
@@ -178,7 +193,11 @@
     return ceil(size.width/225)*24+20;
 }
 
-/* connection lib */
+/*  connection lib
+    delegates of NSURLConnection
+    handle data transmission with server
+ 
+ */
 #pragma mark NSURLConnection Delegate Methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -205,7 +224,7 @@
     NSString *responseString = [[NSString alloc] initWithData:self._responseData encoding:NSUTF8StringEncoding];
     self._responseData = nil;
     NSLog(@"%@",responseString);
-    
+    // parse the json string
     NSDictionary *geojsonDict = [USGSDataFeeder loadDataFromUSGS:responseString];
     [self configureTable:geojsonDict];
     
@@ -219,6 +238,29 @@
     NSDictionary *geojsonDict = [USGSDataFeeder loadDataFromCache];
     [self configureTable:geojsonDict];
 }
+
+//  Call this method to send a request to USGS
+//  We can easily secure the request with HTTPS
+- (void) sendRequestForEarthquakeData {
+    NSMutableString *url = [[NSMutableString alloc] initWithString:@"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithString:url ]]];
+    
+    // Specify that it will be a POST request
+    request.HTTPMethod = @"GET";
+    
+    // Create url connection and fire request
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    if(!conn)
+    {
+        
+    }
+}
+
+/*  Configuration method
+    Given a collection of earthquakes, set up the table and title
+*/
+
 
 - (void)configureTable:(NSDictionary *)geojsonDict {
     if(geojsonDict)
@@ -242,22 +284,6 @@
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
-    }
-}
-
-- (void) sendRequestForEarthquakeData {
-    NSMutableString *url = [[NSMutableString alloc] initWithString:@"http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithString:url ]]];
-    
-    // Specify that it will be a POST request
-    request.HTTPMethod = @"GET";
-    
-    // Create url connection and fire request
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if(!conn)
-    {
-        
     }
 }
 
