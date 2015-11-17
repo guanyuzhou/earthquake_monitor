@@ -49,16 +49,19 @@
         NSLog(@"Error using client ID : %@",[error localizedDescription]);
     }
     
-    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, frame.size.height-50, frame.size.width, 50)];
+    // add a toolbar
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, frame.size.height-44, frame.size.width, 44)];
     [toolbar setTintColor:[UIColor whiteColor]];
     [toolbar setBarStyle:UIBarStyleBlack];
     [self addSubview:toolbar];
     
+    // add a button where user can choose base map type
     UIBarButtonItem *mapTypeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"layers.png"] style:UIBarButtonItemStylePlain target:self action:@selector(mapTypeButtonPressed)];
     toolbar.items = @[mapTypeButton];
     return self;
 }
 
+// call the controller where user can change base map type
 - (void)mapTypeButtonPressed {
     
     MaptypeViewController *mUIViewController = [self.controller.storyboard instantiateViewControllerWithIdentifier:@"MaptypeViewController"];
@@ -66,6 +69,7 @@
     mUIViewController.maptypeChangedTarget = self;
 }
 
+// the callback of map type being changed
 - (void)mapTypeChanged {
     NSURL* url = [NSURL URLWithString:[ARCGISHelper getMapServiceURL: [ARCGISHelper getMaptype]]];
     NSLog(@"%@",[ARCGISHelper getMaptype]);
@@ -75,6 +79,7 @@
     [self setNeedsDisplay];
 }
 
+// configure the pins on map
 - (void)configurePins:(id)data {
     [self.pinLayer removeAllGraphics];
     self.detailItem = data;
@@ -124,7 +129,9 @@
 }
 
 /*
- ArcGis map
+    ArcGis map's delegate
+    When map is loaded, we zoon to the best/minimal envelope that contains all pins
+    Since earth is a globe and sometimes it does not give the best/minimal envelope
  */
 
 - (void)mapViewDidLoad:(AGSMapView *) mapView {

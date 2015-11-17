@@ -56,7 +56,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"CHOOSE THE BASE MAP TO DISPLAY";
+    return @"CHOOSE THE BASE MAP";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

@@ -2,6 +2,8 @@
 //  USGSDataFeeder.m
 //  EarthquakeMonitor
 //
+//  This is the model in the MVC structure
+//
 //  Created by Guanyu Zhou on 11/10/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //
@@ -10,12 +12,12 @@
 
 @implementation USGSDataFeeder
 
-// parse GeoJson
+// parse GeoJson from a string
 + (NSDictionary *) loadDataFromUSGS:(NSString *)geojsonString {
     NSError *error;
     NSDictionary *geojsonDict = [NSJSONSerialization JSONObjectWithData:[geojsonString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     
-    //cache data to local drive
+    //cache data to local drive. executed in background
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSURL *document_folder=[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
                                                                        inDomains:NSUserDomainMask] lastObject];
@@ -31,6 +33,7 @@
     return geojsonDict;
 }
 
+// load cached data amd then parse. If no data has been cached, notify the user
 + (NSDictionary *) loadDataFromCache {
     
     NSDictionary *geojsonDict;
@@ -64,6 +67,8 @@
     return geojsonDict;
 }
 
+// For better understanding the magnitude, we give a color to each magnitude level. This is the function that returns the color given a magnitude
+// dark red for high magnitude and green for low magnitude. Orange in between
 + (UIColor *) getColorForMagnitude:(double) magnitude {
     if(magnitude>=9.0)
         return [UIColor colorWithRed:0.8 green:0.2 blue:0.1 alpha:1.0];
@@ -77,6 +82,10 @@
         return [UIColor colorWithRed:0.7 green:0.4 blue:0.1 alpha:1.0];
 }
 
+// For better locating the epi-center, we also color the pin and label it with the magnitude
+// For each earthquake, the pin is customized.
+// Generate the unique UIImage for a given magnitude
+// This method can be expensive if too many earthquakes are loaded on the map
 + (UIImage *) getColoredPinForMagnitude:(NSNumber *) magnitude {
     
     UIColor *color = [USGSDataFeeder getColorForMagnitude:magnitude.doubleValue];

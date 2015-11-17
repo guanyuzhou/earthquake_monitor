@@ -24,6 +24,8 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu.png"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+    
+    [self.navigationController setToolbarHidden:true];
 }
 
 - (void)didReceiveMemoryWarning {

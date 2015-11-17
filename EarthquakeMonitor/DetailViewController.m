@@ -2,6 +2,12 @@
 //  DetailViewController.m
 //  EarthquakeMonitor
 //
+//  This is the detail view controller
+//  In this controller, we show more information about the selected earthquake
+//  e.g., place, location, date, time and depth
+//  A map is shown at the bottom half of the screen, with a labeled and colored pin pointing to the epi-center
+//  
+//
 //  Created by Guanyu Zhou on 11/10/15.
 //  Copyright (c) 2015 Guanyu Zhou. All rights reserved.
 //
@@ -27,6 +33,7 @@
     }
 }
 
+//  Here we configure the views (only the data/contents) in this controller
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.detailItem) {
@@ -68,6 +75,7 @@
     }
 }
 
+//  Here we configure the views (only the views/containers) in this controller
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.

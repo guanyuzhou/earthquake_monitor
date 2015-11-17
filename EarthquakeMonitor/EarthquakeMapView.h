@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <ArcGIS/ArcGIS.h>
 
+// Note that this id belongs to Guanyu Zhou. It shouldn't be abused out of this app
 #define CLIENT_ID @"5Tz5DMOpLbPR0rx1"
 
 @interface EarthquakeMapView : UIView <AGSMapViewLayerDelegate>
